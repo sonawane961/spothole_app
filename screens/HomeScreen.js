@@ -130,7 +130,7 @@ export default function HomeScreen({ route, navigation }) {
     try {
       const notificationContent = {
         title: 'You are Far away from your Post',
-        body: `Distance: ${distance} m`,
+        body: `Distance: ${~~distance | 0} m`,
         sound: 'default',
       };
       console.log(notificationContent);
