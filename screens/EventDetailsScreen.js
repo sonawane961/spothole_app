@@ -112,14 +112,14 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     titleCon: {
-        backgroundColor: '#10332E',
+        backgroundColor: '#4A2511',
         paddingHorizontal: 7,
         marginLeft: 5,
         paddingVertical: 5,
         borderRadius: 12,
     },
     desCon: {
-        backgroundColor: '#10332E',
+        backgroundColor: '#80471C',
         padding: 20,
         borderRadius: 10,
     },
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     descriptionTitle: {
         // fontFamily: 'Poppins-Bold',
         fontSize: 24,
-        color: '#10332E',
+        color: '#4A2511',
         fontWeight: '600',
         marginBottom: 10,
     },

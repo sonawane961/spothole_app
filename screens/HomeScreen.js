@@ -1,24 +1,31 @@
+import Pubnub from 'pubnub';
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  KeyboardAvoidingView,
+  Button,
+} from 'react-native';
 import { Ionicons, SimpleLineIcons, Feather } from '@expo/vector-icons';
-import { StatusBar } from "expo-status-bar";
+import { StatusBar } from 'expo-status-bar';
 import MapView, { Marker, Circle } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import axios from 'axios';
 import { host } from '../ip';
 
+const pubnub = new Pubnub({
+  publishKey: 'pub-c-fc2bfb00-7232-4340-82b1-1efc6a1f7d41',
+  subscribeKey: 'sub-c-9d7dc568-e522-4355-b3d2-072d63d4c442',
+  userId: 'myUniqueUserId',
+});
+
 export default function HomeScreen({ route, navigation }) {
-
-  const handleEvent = () => {
-    setActiveItem('event');
-    navigation.navigate('Event', {event: event});
-  }
-
-  const handleProfile = () => {
-    setActiveItem('search');
-    navigation.navigate('Profile', { profile: personnel });
-  }
+  const [messages, setMessages] = useState([]);
 
   const [activeItem, setActiveItem] = useState('home');
 
@@ -30,34 +37,120 @@ export default function HomeScreen({ route, navigation }) {
   });
   const [currentLocation, setCurrentLocation] = useState({
     latitude: 19.075983,
-    longitude: 72.877655
+    longitude: 72.877655,
   });
   const [otherLocation1, setOtherLocation1] = useState({
     latitude: 19.0173,
-    longitude: 72.8531
+    longitude: 72.8531,
   });
   const [otherLocation2, setOtherLocation2] = useState({
     latitude: 19.0456,
-    longitude: 72.8254
+    longitude: 72.8254,
   });
   const [otherLocation3, setOtherLocation3] = useState({
     latitude: 19.0244,
-    longitude: 72.8191
+    longitude: 72.8191,
   });
   const [otherLocation4, setOtherLocation4] = useState({
     latitude: 19.0148,
-    longitude: 72.8531
+    longitude: 72.8531,
   });
   const [otherLocation5, setOtherLocation5] = useState({
     latitude: 19.0395,
-    longitude: 72.8472
+    longitude: 72.8472,
   });
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [eventName, setEventName] = useState('');
   const [personnel, setPersonnel] = useState('');
-  const [event, setEvent] = useState('');
+  const [event, setEvent] = useState(null);
+  // const [text, onChangeText] = useState([]);
+
+  useEffect(() => {
+    const showMessage = (msg) => {
+      setMessages((messages) => [...messages, msg]);
+    };
+
+    // add listener
+    const listener = {
+      status: (statusEvent) => {
+        if (statusEvent.category === 'PNConnectedCategory') {
+          console.log('Connected');
+        }
+      },
+      message: (messageEvent) => {
+        showMessage(messageEvent.message.description);
+      },
+      presence: (presenceEvent) => {
+        // handle presence
+      },
+    };
+    pubnub.addListener(listener);
+    // cleanup listener
+    return () => {
+      pubnub.removeListener(listener);
+    };
+  }, [pubnub, setMessages]);
+
+  // publish message
+  const publishMessage = async (message) => {
+    // With the right payload, you can publish a message, add a reaction to a message,
+    // send a push notification, or send a small payload called a signal.
+    const publishPayload = {
+      channel: event?._id,
+      message: {
+        title: 'greeting',
+        description: {
+          from: personnel?._id,
+          message: currentLocation,
+        },
+      },
+    };
+    await pubnub.publish(publishPayload);
+  };
+
+  const MINUTE_MS = 60000;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      publishMessage('hello');
+    }, MINUTE_MS);
+
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, [])
+
+  useEffect(() => {
+    // subscribe to a channel
+    // console.log(event);
+    if (event && event._id) {
+      // console.log(event._id);
+      // console.log(personnel._id);
+      pubnub.subscribe({
+        channels: [event._id],
+      });
+      // cleanup subscription
+      return () => {
+        pubnub.unsubscribe({
+          channels: [event._id],
+        });
+      };
+    }
+  }, [pubnub, event]);
+
+  useEffect(() => {
+    console.log(messages);
+  }, [messages]);
+
+  const handleEvent = () => {
+    setActiveItem('event');
+    navigation.navigate('Event', { event: event });
+  };
+
+  const handleProfile = () => {
+    setActiveItem('search');
+    navigation.navigate('Profile', { profile: personnel });
+  };
 
   useEffect(() => {
     // Request permission to access location
@@ -68,29 +161,38 @@ export default function HomeScreen({ route, navigation }) {
         return;
       }
 
-      let id = route.params.id_number
+      let id = route?.params?.id_number;
 
       const data = await axios.get(`${host}/api/personnel/detail/${id}`);
       // console.log(data.data.personnel)
-      setPersonnel(data.data.personnel)
+      setPersonnel(data.data.personnel);
 
-      let event_id = data.data.current_event[0].event
+      let event_id = data.data.current_event[0].event;
 
-      const event_data = await axios.get(`${host}/api/events/${event_id}`);
-      setEventName(event_data.data.event.name)
-      setEvent(event_data.data.event)
-      console.log(event_data.data.event)
+      const event_data = await axios.get(
+        `${host}/api/events/${event_id}`
+      );
+      // setLongitude(event_data.data.event.location.coordinates[1]);
+      // setLatitude(event_data.data.event.location.coordinates);
+      setmapRegion({
+        latitude: event_data.data.event.location.coordinates[0],
+        longitude: event_data.data.event.location.coordinates[1]
+      })
+      setEventName(event_data.data.event.name);
+      setEvent(event_data.data.event);
+      console.log(event_data.data.event);
 
       // Enable background location tracking
       await Location.startLocationUpdatesAsync('backgroundLocationTask', {
         accuracy: Location.Accuracy.High,
-        timeInterval: 5000,
+        timeInterval: 300000,
         distanceInterval: 10,
         deferredUpdatesInterval: 1000,
         deferredUpdatesDistance: 1,
         foregroundService: {
           notificationTitle: 'Background location tracking',
-          notificationBody: 'We are tracking your location in the background',
+          notificationBody:
+            'We are tracking your location in the background',
           notificationColor: '#ffffff',
         },
       });
@@ -113,9 +215,14 @@ export default function HomeScreen({ route, navigation }) {
             longitude: currentLocation?.coords?.longitude,
             latitudeDelta: 0.0122,
             longitudeDelta: 0.0091,
-          })
+          });
 
-          let distance = calculateDistance(mapRegion.latitude, mapRegion.longitude, currentLocation?.coords?.latitude, currentLocation?.coords?.longitude);
+          let distance = calculateDistance(
+            mapRegion.latitude,
+            mapRegion.longitude,
+            currentLocation?.coords?.latitude,
+            currentLocation?.coords?.longitude
+          );
           // console.log(distance);
           // console.log(currentLocation?.coords?.lat);
           setLocation(newLocation);
@@ -150,7 +257,7 @@ export default function HomeScreen({ route, navigation }) {
   const sendNotification = async (distance) => {
     try {
       const notificationContent = {
-        title: 'You are Far away from your Post',
+        title: '🚨️ You are Far away from your Post 🚨️',
         body: `Distance: ${~~distance | 0} m`,
         sound: 'default',
       };
@@ -182,65 +289,48 @@ export default function HomeScreen({ route, navigation }) {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar style='dark' />
       <View style={styles.mapContainer}>
         <MapView
           style={{ alignSelf: 'stretch', height: '100%' }}
           region={mapRegion}
         >
-          <Marker coordinate={mapRegion}
-            style={{ height: 40, width: 40 }}
-            title="Allocated Location">
-          </Marker>
           <Marker
-            coordinate={currentLocation}
-            title="Your location"
-          >
+            coordinate={mapRegion}
+            style={{ height: 40, width: 40 }}
+            title='Allocated Location'
+          ></Marker>
+          <Marker coordinate={currentLocation} title='Your location'>
             <Image
               source={require('../assets/location_current.png')}
               style={{ width: 70, height: 70 }}
             />
           </Marker>
-          <Marker
-            coordinate={otherLocation1}
-            title="Officers"
-          >
+          <Marker coordinate={otherLocation1} title='Officers'>
             <Image
               source={require('../assets/location_other.png')}
               style={{ width: 60, height: 60 }}
             />
           </Marker>
-          <Marker
-            coordinate={otherLocation2}
-            title="Officers"
-          >
+          <Marker coordinate={otherLocation2} title='Officers'>
             <Image
               source={require('../assets/location_other.png')}
               style={{ width: 60, height: 60 }}
             />
           </Marker>
-          <Marker
-            coordinate={otherLocation3}
-            title="Officers"
-          >
+          <Marker coordinate={otherLocation3} title='Officers'>
             <Image
               source={require('../assets/location_other.png')}
               style={{ width: 60, height: 60 }}
             />
           </Marker>
-          <Marker
-            coordinate={otherLocation4}
-            title="Officers"
-          >
+          <Marker coordinate={otherLocation4} title='Officers'>
             <Image
               source={require('../assets/location_other.png')}
               style={{ width: 60, height: 60 }}
             />
           </Marker>
-          <Marker
-            coordinate={otherLocation5}
-            title="Officers"
-          >
+          <Marker coordinate={otherLocation5} title='Officers'>
             <Image
               source={require('../assets/location_other.png')}
               style={{ width: 60, height: 60 }}
@@ -249,65 +339,118 @@ export default function HomeScreen({ route, navigation }) {
           <Circle
             center={mapRegion}
             radius={2500}
-            fillColor="rgba(0, 105, 0, 0.3)"
-            strokeColor="rgba(0, 255, 0, 0.5)"
+            fillColor='rgba(0, 105, 0, 0.3)'
+            strokeColor='rgba(0, 255, 0, 0.5)'
             strokeWidth={2}
           />
         </MapView>
       </View>
       <View style={styles.topContainer}>
         <View style={styles.searchContainer}>
-          <Ionicons name="md-location-sharp" size={24} color="#181829" style={styles.searchIcon} />
-          <Text style={styles.searchInput}>{eventName}
-          </Text>
+          <Ionicons
+            name='md-location-sharp'
+            size={24}
+            color='#181829'
+            style={styles.searchIcon}
+          />
+          <Text style={styles.searchInput}>{eventName}🚩️🚩️</Text>
           {/* <Ionicons name="chevron-down" size={24} color="black" style={styles.downIcon} /> */}
         </View>
         <TouchableOpacity
           style={styles.filterIcon}
+          // onPress={() => {
+          //   publishMessage('hello');
+          // }}
         >
-          <Feather name="bell" size={24} color="black" />
+          <Feather name='bell' size={24} color='black' />
         </TouchableOpacity>
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.bottomNavigationContainer}>
           <View style={styles.bottomNavigation}>
             <TouchableOpacity
-              style={[styles.bottomNavigationItem, activeItem === 'home' && styles.bottomNavigationItemActive]}
+              style={[
+                styles.bottomNavigationItem,
+                activeItem === 'home' &&
+                styles.bottomNavigationItemActive,
+              ]}
               onPress={() => setActiveItem('home')}
             >
-              <Ionicons name="ios-compass-outline" size={30} color={activeItem === 'home' ? '#FFFFFF' : '#AAAAAA'} />
-              {activeItem === 'home' && <View style={styles.activeDot} />}
+              <Ionicons
+                name='ios-compass-outline'
+                size={30}
+                color={
+                  activeItem === 'home'
+                    ? '#FFFFFF'
+                    : '#AAAAAA'
+                }
+              />
+              {activeItem === 'home' && (
+                <View style={styles.activeDot} />
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.bottomNavigationItem, activeItem === 'event' && styles.bottomNavigationItemActive]}
+              style={[
+                styles.bottomNavigationItem,
+                activeItem === 'event' &&
+                styles.bottomNavigationItemActive,
+              ]}
               onPress={handleEvent}
             >
-              <SimpleLineIcons name="event" size={20} color={activeItem === 'event' ? '#FFFFFF' : '#AAAAAA'} style={{ paddingBottom: 2 }} />
-              {activeItem === 'event' && <View style={styles.activeDot} />}
+              <SimpleLineIcons
+                name='event'
+                size={20}
+                color={
+                  activeItem === 'event'
+                    ? '#FFFFFF'
+                    : '#AAAAAA'
+                }
+                style={{ paddingBottom: 2 }}
+              />
+              {activeItem === 'event' && (
+                <View style={styles.activeDot} />
+              )}
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.bottomNavigationItem, activeItem === 'search' && styles.bottomNavigationItemActive]}
+              style={[
+                styles.bottomNavigationItem,
+                activeItem === 'search' &&
+                styles.bottomNavigationItemActive,
+              ]}
               onPress={handleProfile}
             >
-              <Ionicons name="person-outline" size={24} color={activeItem === 'search' ? '#FFFFFF' : '#AAAAAA'} />
-              {activeItem === 'search' && <View style={styles.activeDot} />}
+              <Ionicons
+                name='person-outline'
+                size={24}
+                color={
+                  activeItem === 'search'
+                    ? '#FFFFFF'
+                    : '#AAAAAA'
+                }
+              />
+              {activeItem === 'search' && (
+                <View style={styles.activeDot} />
+              )}
             </TouchableOpacity>
-
-
           </View>
         </View>
 
-        <TouchableOpacity onPress={() => navigation.navigate('AppInfo')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('AppInfo')}
+        >
           <View style={styles.goButton}>
-            <Image style={styles.logo} source={require('../assets/logo.png')} />
+            <Image
+              style={styles.logo}
+              source={require('../assets/logo.png')}
+            />
           </View>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -333,7 +476,7 @@ const styles = StyleSheet.create({
   },
   searchIcon: {
     marginRight: 10,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   downIcon: {
     alignSelf: 'center',
@@ -346,7 +489,7 @@ const styles = StyleSheet.create({
     color: '#000',
     alignSelf: 'center',
     paddingRight: '5%',
-    paddingVertical: '2%'
+    paddingVertical: '2%',
   },
   filterIcon: {
     backgroundColor: '#FFFFFF',
@@ -355,7 +498,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginHorizontal: 10,
     padding: 10,
-    height: 50
+    height: 50,
   },
   bottomContainer: {
     width: '100%',
@@ -417,8 +560,3 @@ const styles = StyleSheet.create({
     width: 100,
   },
 });
-
-
-
-
-

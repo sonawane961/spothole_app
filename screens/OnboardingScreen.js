@@ -202,6 +202,8 @@ export default function OnboardingScreen({ route, navigation }) {
                                 onChangeText={(_password) =>
                                     setPassword(_password)
                                 }
+                                secureTextEntry={true}
+
                                 value={password}
                                 autoCapitalize='none'
                             />
