@@ -53,12 +53,17 @@ export default function OnboardingScreen({ route, navigation }) {
 
     const handleSubmit = async () => {
         // Validate form fields and submit form
-        console.log(password, id, typeof id, typeof Number(id));
+        // console.log(password, id, typeof id, typeof Number(id));
         const data = await axios.post(`${host}/api/personnel/login`, {
             id_number: Number(id),
             password: password,
         });
-        console.log(data.data);
+        if(data.status === 200){
+            console.log(data.data._id)
+            navigation.navigate('Home', { id_number: data.data._id})
+        }else{
+            //Handle NO login
+        }
     };
 
     const nextPage = () => setPage(page + 1);
@@ -163,7 +168,7 @@ export default function OnboardingScreen({ route, navigation }) {
                         </View> */}
                         <View style={styles.inputContainer}>
                             <MaterialCommunityIcons
-                                name='password'
+                                name='police-station'
                                 style={styles.icon}
                             />
                             <TextInput

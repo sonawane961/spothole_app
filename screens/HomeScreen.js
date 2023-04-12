@@ -5,12 +5,19 @@ import { StatusBar } from "expo-status-bar";
 import MapView, { Marker, Circle } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
+import axios from 'axios';
+import { host } from '../ip';
 
 export default function HomeScreen({ route, navigation }) {
 
   const handleEvent = () => {
     setActiveItem('event');
-    navigation.navigate('Event');
+    navigation.navigate('Event', {event: event});
+  }
+
+  const handleProfile = () => {
+    setActiveItem('search');
+    navigation.navigate('Profile', { profile: personnel });
   }
 
   const [activeItem, setActiveItem] = useState('home');
@@ -45,11 +52,12 @@ export default function HomeScreen({ route, navigation }) {
     latitude: 19.0395,
     longitude: 72.8472
   });
-  
-    
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [eventName, setEventName] = useState('');
+  const [personnel, setPersonnel] = useState('');
+  const [event, setEvent] = useState('');
 
   useEffect(() => {
     // Request permission to access location
@@ -59,6 +67,19 @@ export default function HomeScreen({ route, navigation }) {
         setErrorMsg('Permission to access location was denied');
         return;
       }
+
+      let id = route.params.id_number
+
+      const data = await axios.get(`${host}/api/personnel/detail/${id}`);
+      // console.log(data.data.personnel)
+      setPersonnel(data.data.personnel)
+
+      let event_id = data.data.current_event[0].event
+
+      const event_data = await axios.get(`${host}/api/events/${event_id}`);
+      setEventName(event_data.data.event.name)
+      setEvent(event_data.data.event)
+      console.log(event_data.data.event)
 
       // Enable background location tracking
       await Location.startLocationUpdatesAsync('backgroundLocationTask', {
@@ -82,7 +103,7 @@ export default function HomeScreen({ route, navigation }) {
       Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.High,
-          timeInterval: 5000,
+          timeInterval: 50000,
           distanceInterval: 10,
           mayShowUserSettingsDialog: true,
         },
@@ -94,11 +115,11 @@ export default function HomeScreen({ route, navigation }) {
             longitudeDelta: 0.0091,
           })
 
-          let distance = calculateDistance(mapRegion.latitude, mapRegion.longitude, currentLocation.coords.latitude, currentLocation.coords.longitude);
-          console.log("=========", distance);
+          let distance = calculateDistance(mapRegion.latitude, mapRegion.longitude, currentLocation?.coords?.latitude, currentLocation?.coords?.longitude);
+          // console.log(distance);
           // console.log(currentLocation?.coords?.lat);
           setLocation(newLocation);
-          if(distance > 2500){
+          if (distance > 2500) {
             sendNotification(distance);
           }
         }
@@ -133,7 +154,7 @@ export default function HomeScreen({ route, navigation }) {
         body: `Distance: ${distance} m`,
         sound: 'default',
       };
-      console.log(notificationContent);
+      // console.log(notificationContent);
       const trigger = new Date();
       trigger.setSeconds(trigger.getSeconds() + 1);
       await Notifications.scheduleNotificationAsync({
@@ -237,7 +258,7 @@ export default function HomeScreen({ route, navigation }) {
       <View style={styles.topContainer}>
         <View style={styles.searchContainer}>
           <Ionicons name="md-location-sharp" size={24} color="#181829" style={styles.searchIcon} />
-          <Text style={styles.searchInput}> Raj Thakare Rally
+          <Text style={styles.searchInput}>{eventName}
           </Text>
           {/* <Ionicons name="chevron-down" size={24} color="black" style={styles.downIcon} /> */}
         </View>
@@ -268,7 +289,7 @@ export default function HomeScreen({ route, navigation }) {
 
             <TouchableOpacity
               style={[styles.bottomNavigationItem, activeItem === 'search' && styles.bottomNavigationItemActive]}
-              onPress={() => setActiveItem('search')}
+              onPress={handleProfile}
             >
               <Ionicons name="person-outline" size={24} color={activeItem === 'search' ? '#FFFFFF' : '#AAAAAA'} />
               {activeItem === 'search' && <View style={styles.activeDot} />}
@@ -323,7 +344,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#000',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    paddingRight: '5%',
+    paddingVertical: '2%'
   },
   filterIcon: {
     backgroundColor: '#FFFFFF',
