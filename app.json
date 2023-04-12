@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "nirikshak",
+    "slug": "nirikshak",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/logo_name.png",
+      "resizeMode": "contain",
+      "backgroundColor": "rgba(255, 245, 210, 1)"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.saurabh5.messStudentApp"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#DCB98A"
+      },
+      "package": "com.saurabh5.messStudentApp",
+      "permissions": [ "WRITE_EXTERNAL_STORAGE", "READ_EXTERNAL_STORAGE" ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/logo.png",
+          "color": "#ffffff"
+        }
+      ]
+    ]
+  }
+}
