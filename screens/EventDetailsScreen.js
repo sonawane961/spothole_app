@@ -3,17 +3,27 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function EventDetailsScreen({ route, navigation }) {
+
+    console.log(route.params.event)
+
+    const event_name = route.params.event.name;
+    const number_of_police = route.params.event.personnels.length;
+    const start_date = new Date(route.params.event.start);
+    const end_date = new Date(route.params.event.end);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    const formattedStartDate = start_date.toLocaleDateString('en-US', options);
+    const formattedEndDate = end_date.toLocaleDateString('en-US', options);
+
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image
                     source={require('../assets/images/manase.jpg')}
-                    //   source={{ uri: 'https://picsum.photos/id/237/200/300' }}
                     style={styles.image}
                 />
                 <View style={styles.imageOverlay} />
                 <Ionicons name="md-arrow-back" size={28} color="#FFFFFF" style={styles.backButton} onPress={() => navigation.navigate('Home')}/>
-                <Text style={styles.title}>Raj Thakare Rally 🚩️🚩️</Text>
+                <Text style={styles.title}>{event_name}🚩️🚩️</Text>
             </View>
             <View style={styles.detailsContainer}>
                 <View style={styles.detailsRow}>
@@ -21,7 +31,7 @@ export default function EventDetailsScreen({ route, navigation }) {
                     <View style={styles.titleCon}>
                         <Text style={styles.priText}> Date </Text>
                     </View>
-                    <Text style={styles.detailsText}> : March 30, 2023</Text>
+                    <Text style={styles.detailsText}> : {formattedStartDate} - {formattedEndDate}</Text>
                 </View>
                 <View style={styles.detailsRow}>
                     <Ionicons name="md-time" size={24} color="#10332E" />
@@ -35,7 +45,7 @@ export default function EventDetailsScreen({ route, navigation }) {
                     <View style={styles.titleCon}>
                         <Text style={styles.priText}> On-Duty Officers </Text>
                     </View>
-                    <Text style={styles.detailsText}> 👮‍♂️ : 50 ️</Text>
+                    <Text style={styles.detailsText}> 👮‍♂️ : {number_of_police} ️</Text>
                 </View>
                 <View style={styles.detailsRow}>
                     <Ionicons name="md-star" size={24} color="#10332E" />
@@ -90,6 +100,7 @@ const styles = StyleSheet.create({
     },
     title: {
         position: 'absolute',
+        marginRight: '5%',
         bottom: 20,
         left: 20,
         // fontFamily: 'Poppins-Bold',

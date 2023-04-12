@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView } from 'react-native';
 import { Ionicons, SimpleLineIcons, Feather } from '@expo/vector-icons';
 import { StatusBar } from "expo-status-bar";
 import MapView, { Marker, Circle } from 'react-native-maps';
