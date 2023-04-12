@@ -1,9 +1,8 @@
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
   View,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Image,
 } from "react-native";

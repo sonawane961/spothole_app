@@ -27,9 +27,11 @@ const customFonts = {
 export default function OnboardingScreen({ route, navigation }) {
     const [page, setPage] = useState(1);
     const [name, setName] = useState('');
+    const [station, setStation] = useState('');
     const [id, setId] = useState('');
     const [password, setPassword] = useState('');
-    const [phoneNumber, ssetPhoneNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [dept, setDept] = useState('');
     const [fontLoaded, setFontLoaded] = useState(false);
 
     const loadFonts = async () => {
@@ -124,8 +126,8 @@ export default function OnboardingScreen({ route, navigation }) {
                             <TextInput
                                 style={styles.input}
                                 placeholder='Station Designation'
-                                onChangeText={(text) => setName(text)}
-                                value={id}
+                                onChangeText={(text) => setStation(text)}
+                                value={station}
                                 autoCapitalize='none'
                             />
                         </View>
@@ -167,21 +169,6 @@ export default function OnboardingScreen({ route, navigation }) {
                             />
                         </View> */}
                         <View style={styles.inputContainer}>
-                            <MaterialCommunityIcons
-                                name='police-station'
-                                style={styles.icon}
-                            />
-                            <TextInput
-                                style={styles.input}
-                                placeholder='Password'
-                                onChangeText={(_password) =>
-                                    setPassword(_password)
-                                }
-                                value={password}
-                                autoCapitalize='none'
-                            />
-                        </View>
-                        <View style={styles.inputContainer}>
                             <FontAwesome5
                                 name='teamspeak'
                                 style={styles.icon}
@@ -189,8 +176,8 @@ export default function OnboardingScreen({ route, navigation }) {
                             <TextInput
                                 style={styles.input}
                                 placeholder='Station Department'
-                                onChangeText={(text) => setName(text)}
-                                value={id}
+                                onChangeText={(text) => setDept(text)}
+                                value={dept}
                                 autoCapitalize='none'
                             />
                         </View>
@@ -202,6 +189,21 @@ export default function OnboardingScreen({ route, navigation }) {
                                 value={phoneNumber}
                                 onChangeText={(text) => setName(text)}
                                 keyboardType='phone-pad'
+                            />
+                        </View>
+                        <View style={styles.inputContainer}>
+                            <MaterialCommunityIcons
+                                name='lock'
+                                style={styles.icon}
+                            />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Password'
+                                onChangeText={(_password) =>
+                                    setPassword(_password)
+                                }
+                                value={password}
+                                autoCapitalize='none'
                             />
                         </View>
                         <TouchableOpacity
