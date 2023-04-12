@@ -42,10 +42,10 @@ const AppInfoScreen = ({ route, navigation }) => {
             Welcome to our app, designed to help track police officers who are deployed to 
             bandobast duty. Our app is specifically created to address the problem statement PS13 of Kavach 2023
         </Text>
-        <Text style={styles.body}>Crafted By :</Text>
+        <Text style={styles.body}>Crafted with ❤️ By :</Text>
         <Text style={styles.names}>Utsav Khatu{'\n'}Tushar Bauskar{'\n'}Saurabh Powar{'\n'}Shubham Nazare{'\n'}Asavari Ambavane{'\n'}Chaitravi Chalke</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.buttonText}>Back</Text>
+          <Text style={styles.buttonText}>Thank You 🙏️</Text>
         </TouchableOpacity>
       </View>
     </>
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     marginTop: "-5%"
   },
   heading: {
-    fontSize: 14,
+    fontSize: 18,
     fontFamily: 'Poppins',
     color: "black",
     paddingHorizontal: '10%',
@@ -80,8 +80,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   body: {
-    fontSize: 16,
-    fontFamily: 'Raleway',
+    fontSize: 20,
+    fontWeight: 'bold',
+    fontFamily: 'Poppins',
     color: "black",
     paddingHorizontal: '10%',
     textAlign: 'center',
@@ -89,11 +90,11 @@ const styles = StyleSheet.create({
     marginBottom: '2%'
   },
   names: {
-    fontSize: 14,
+    fontSize: 18,
     fontFamily: 'Raleway',
-    color: "black",
+    color: "#4A2511",
     paddingHorizontal: '10%',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   button: {
     backgroundColor: 'black',

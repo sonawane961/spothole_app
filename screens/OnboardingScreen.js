@@ -162,8 +162,8 @@ export default function OnboardingScreen({ route, navigation }) {
                             />
                         </View> */}
                         <View style={styles.inputContainer}>
-                            <MaterialCommunityIcons
-                                name='password'
+                            <Ionicons
+                                name='barcode-outline'
                                 style={styles.icon}
                             />
                             <TextInput
@@ -341,6 +341,6 @@ const styles = StyleSheet.create({
     icon: {
         marginRight: 10,
         fontSize: 20,
-        color: '#999',
+        color: '#000',
     },
 });

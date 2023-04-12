@@ -237,7 +237,7 @@ export default function HomeScreen({ route, navigation }) {
       <View style={styles.topContainer}>
         <View style={styles.searchContainer}>
           <Ionicons name="md-location-sharp" size={24} color="#181829" style={styles.searchIcon} />
-          <Text style={styles.searchInput}> Raj Thakare Rally
+          <Text style={styles.searchInput}> 🚩️ Raj Thakare Rally 🚩️
           </Text>
           {/* <Ionicons name="chevron-down" size={24} color="black" style={styles.downIcon} /> */}
         </View>
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins',
     fontSize: 16,
     fontWeight: '600',
-    color: '#000',
+    color: '#ED7014',
     alignSelf: 'center'
   },
   filterIcon: {
