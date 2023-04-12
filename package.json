@@ -12,7 +12,7 @@
     "@expo/webpack-config": "^0.17.2",
     "@react-navigation/native": "^6.1.2",
     "@react-navigation/stack": "^6.2.3",
-    "axios": "^1.2.2",
+    "axios": "^1.3.5",
     "core-js": "^3.6.2",
     "expo": "^47.0.13",
     "expo-google-fonts": "^0.0.0",
@@ -20,6 +20,7 @@
     "expo-location": "^15.1.1",
     "expo-notifications": "^0.18.1",
     "expo-permissions": "^14.0.0",
+    "expo-splash-screen": "~0.17.5",
     "expo-status-bar": "~1.4.2",
     "expo-updates": "~0.15.6",
     "react": "18.1.0",
@@ -33,8 +34,7 @@
     "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "~3.18.0",
     "react-native-web": "~0.18.9",
-    "styled-components": "^5.3.5",
-    "expo-splash-screen": "~0.17.5"
+    "styled-components": "^5.3.5"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

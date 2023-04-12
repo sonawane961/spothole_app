@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons, AntDesign, FontAwesome, MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
-
+import {
+    View,
+    Text,
+    TextInput,
+    Image,
+    StyleSheet,
+    TouchableOpacity,
+} from 'react-native';
+import {
+    Ionicons,
+    AntDesign,
+    FontAwesome,
+    MaterialCommunityIcons,
+    Entypo,
+    FontAwesome5,
+} from '@expo/vector-icons';
+import axios from 'axios';
 import * as Font from 'expo-font';
+import { host } from '../ip';
 
 const customFonts = {
-    'Poppins': require('../assets/fonts/Poppins/Poppins-Regular.ttf'),
-    'Raleway': require('../assets/fonts/Raleway/static/Raleway-Black.ttf')
+    Poppins: require('../assets/fonts/Poppins/Poppins-Regular.ttf'),
+    Raleway: require('../assets/fonts/Raleway/static/Raleway-Black.ttf'),
 };
 
 export default function OnboardingScreen({ route, navigation }) {
     const [page, setPage] = useState(1);
     const [name, setName] = useState('');
-    const [id, setId] = useState();
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [id, setId] = useState('');
+    const [password, setPassword] = useState('');
+    const [phoneNumber, ssetPhoneNumber] = useState('');
     const [fontLoaded, setFontLoaded] = useState(false);
 
     const loadFonts = async () => {
@@ -35,9 +51,14 @@ export default function OnboardingScreen({ route, navigation }) {
         setPage(page - 1);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // Validate form fields and submit form
-        navigation.navigate('Home')
+        console.log(password, id, typeof id, typeof Number(id));
+        const data = await axios.post(`${host}/api/personnel/login`, {
+            id_number: Number(id),
+            password: password,
+        });
+        console.log(data.data);
     };
 
     const nextPage = () => setPage(page + 1);
@@ -49,48 +70,67 @@ export default function OnboardingScreen({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image style={styles.logo} source={require('../assets/logo_name.png')} />
+                <Image
+                    style={styles.logo}
+                    source={require('../assets/logo_name.png')}
+                />
             </View>
             {/* ------------------- FORM 1 ------------------ */}
             {page === 1 && (
                 <View style={styles.cardContainer}>
                     <View style={styles.card}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
                             <Text style={styles.indexActive}>{page}</Text>
                             <Text style={styles.index}> / 2</Text>
                         </View>
-                        <Text style={styles.title}>Police Registration 👮‍♂️️</Text>
+                        <Text style={styles.title}>
+                            Police Registration 👮‍♂️️
+                        </Text>
                         <View style={styles.inputContainer}>
-                            <FontAwesome name="user-o" style={styles.icon} />
-                            <TextInput style={styles.input}
-                                placeholder="Full Name"
-                                onChangeText={text => setName(text)}
+                            <FontAwesome name='user-o' style={styles.icon} />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Full Name'
+                                onChangeText={(text) => setName(text)}
                                 value={name}
-                                autoCapitalize="none"
+                                autoCapitalize='none'
                             />
                         </View>
                         <View style={styles.inputContainer}>
-                            <AntDesign name="idcard" style={styles.icon} />
-                            <TextInput style={styles.input}
-                                placeholder="Police ID Number"
-                                onChangeText={text => setName(text)}
+                            <AntDesign name='idcard' style={styles.icon} />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Police ID Number'
+                                onChangeText={(_id) => setId(_id)}
                                 value={id}
-                                autoCapitalize="none"
+                                autoCapitalize='none'
                             />
                         </View>
                         <View style={styles.inputContainer}>
-                            <MaterialCommunityIcons name="police-badge-outline" style={styles.icon} />
-                            <TextInput style={styles.input}
-                                placeholder="Station Designation"
-                                onChangeText={text => setName(text)}
+                            <MaterialCommunityIcons
+                                name='police-badge-outline'
+                                style={styles.icon}
+                            />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Station Designation'
+                                onChangeText={(text) => setName(text)}
                                 value={id}
-                                autoCapitalize="none"
+                                autoCapitalize='none'
                             />
                         </View>
                         {/* <View style={styles.inputRow}>
 
                         </View> */}
-                        <TouchableOpacity style={styles.continue} onPress={handleContinue}>
+                        <TouchableOpacity
+                            style={styles.continue}
+                            onPress={handleContinue}
+                        >
                             <Text style={styles.contText}>Continue</Text>
                         </TouchableOpacity>
                     </View>
@@ -102,12 +142,17 @@ export default function OnboardingScreen({ route, navigation }) {
             {page === 2 && (
                 <View style={styles.cardContainer}>
                     <View style={styles.card}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
                             <Text style={styles.indexActive}>{page}</Text>
                             <Text style={styles.index}> / 2</Text>
                         </View>
                         <Text style={styles.title}>Police Registration 👮‍♂️</Text>
-                        <View style={styles.inputContainer}>
+                        {/* <View style={styles.inputContainer}>
                             <MaterialCommunityIcons name="police-station" style={styles.icon} />
                             <TextInput style={styles.input}
                                 placeholder="Posted Station"
@@ -115,47 +160,80 @@ export default function OnboardingScreen({ route, navigation }) {
                                 value={id}
                                 autoCapitalize="none"
                             />
+                        </View> */}
+                        <View style={styles.inputContainer}>
+                            <MaterialCommunityIcons
+                                name='password'
+                                style={styles.icon}
+                            />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Password'
+                                onChangeText={(_password) =>
+                                    setPassword(_password)
+                                }
+                                value={password}
+                                autoCapitalize='none'
+                            />
                         </View>
                         <View style={styles.inputContainer}>
-                            <FontAwesome5 name="teamspeak" style={styles.icon} />
-                            <TextInput style={styles.input}
-                                placeholder="Station Department"
-                                onChangeText={text => setName(text)}
+                            <FontAwesome5
+                                name='teamspeak'
+                                style={styles.icon}
+                            />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Station Department'
+                                onChangeText={(text) => setName(text)}
                                 value={id}
-                                autoCapitalize="none"
+                                autoCapitalize='none'
                             />
                         </View>
                         <View style={styles.inputContainer}>
-                            <Entypo name="old-mobile" style={styles.icon} />
-                            <TextInput style={styles.input}
-                                placeholder="Phone Number"
+                            <Entypo name='old-mobile' style={styles.icon} />
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Phone Number'
                                 value={phoneNumber}
-                                onChangeText={text => setName(text)}
-                                keyboardType="phone-pad"
+                                onChangeText={(text) => setName(text)}
+                                keyboardType='phone-pad'
                             />
                         </View>
-                        <TouchableOpacity style={styles.previous} onPress={handlePrevious}>
+                        <TouchableOpacity
+                            style={styles.previous}
+                            onPress={handlePrevious}
+                        >
                             <Text style={styles.prevText}>Previous</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.continue} onPress={handleSubmit}>
+                        <TouchableOpacity
+                            style={styles.continue}
+                            onPress={handleSubmit}
+                        >
                             <Text style={styles.contText}>Submit</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-                            <Ionicons name="md-checkmark-circle" size={28} color="#FFFFFF" />
+                        <TouchableOpacity
+                            style={styles.submitButton}
+                            onPress={handleSubmit}
+                        >
+                            <Ionicons
+                                name='md-checkmark-circle'
+                                size={28}
+                                color='#FFFFFF'
+                            />
                         </TouchableOpacity>
                     </View>
                 </View>
             )}
         </View>
     );
-};
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF'
+        backgroundColor: '#FFFFFF',
     },
     cardContainer: {
         alignItems: 'center',
@@ -164,7 +242,7 @@ const styles = StyleSheet.create({
         width: '80%',
     },
     logoContainer: {
-        alignItems: 'center'
+        alignItems: 'center',
     },
     logo: {
         height: 275,
@@ -182,8 +260,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 3,
         elevation: 2,
-        width: "100%",
-        marginTop: "-4%"
+        width: '100%',
+        marginTop: '-4%',
     },
     indexActive: {
         fontFamily: 'Poppins',
@@ -257,7 +335,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         position: 'absolute',
         bottom: 25,
-        right: 10
+        right: 10,
     },
 
     icon: {

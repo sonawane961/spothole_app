@@ -1,2 +1,1 @@
-export const host =
-  "http://c11a-2409-4040-d0d-fc99-5856-5d6c-2861-6d7a.ngrok.io";
+export const host = 'https://0355-115-96-218-162.ngrok-free.app';
