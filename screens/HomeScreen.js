@@ -67,7 +67,7 @@ export default function HomeScreen({ route, navigation }) {
 
     const [location, setLocation] = useState(null);
     const [errorMsg, setErrorMsg] = useState(null);
-    const [eventName, setEventName] = useState('');
+    const [eventName, setEventName] = useState('Raj Thakare Rally ');
     const [personnel, setPersonnel] = useState('');
     const [event, setEvent] = useState(null);
     // const [text, onChangeText] = useState([]);
@@ -345,6 +345,14 @@ export default function HomeScreen({ route, navigation }) {
         text = JSON.stringify(location);
     }
 
+  const [showModal, setShowModal] = useState(false);
+
+  const notifications = [
+    { id: 1, title: 'Raj Thakare Rally 🚩️', description: 'MNS chief Raj Thackeray trained his guns at Maharashtra chief minister Eknath Shinde from the Shivaji Parkafter.' },
+    { id: 2, title: 'Kolkata Didi Speech 🐯️', description: 'West Bengal chief minister Mamata Banerjee on Tuesday said that she will hold a protest from March 29 noon to March 30' },
+    { id: 3, title: 'Pappu Party Prachar 🧒️', description: 'Disqualified for elections :/' },
+  ];
+
     return (
         <KeyboardAvoidingView style={styles.container}>
             <StatusBar style='dark' />
@@ -586,16 +594,28 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         paddingRight: '5%',
         paddingVertical: '2%',
-    },
+      width: '90%'
+  },
     filterIcon: {
         backgroundColor: '#FFFFFF',
         borderRadius: 15,
         borderColor: '#ddd',
         borderWidth: 1,
         marginHorizontal: 10,
-        padding: 10,
-        height: 50,
-    },
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+    height: 50,
+      position: 'relative',
+  },
+  notificationDot: {
+    position: 'absolute',
+    top: 10,
+    right: 18,
+    backgroundColor: 'red',
+    width: 7,
+    height: 7,
+    borderRadius: 5,
+  },
     bottomContainer: {
         width: '100%',
         height: 75,
@@ -655,4 +675,41 @@ const styles = StyleSheet.create({
         height: 100,
         width: 100,
     },
+  modal: {
+    position: 'absolute',
+    top: '12%',
+    right: '12%',
+    width: '75%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  notList: {
+    flex: 1,
+    padding: 10,
+  },
+  notCard: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 10,
+  },
+  notTitle: {
+    fontFamily: 'Raleway',
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 5,
+  },
+  notDescription: {
+    fontFamily: 'Poppins',
+    fontSize: 14,
+  },
 });
