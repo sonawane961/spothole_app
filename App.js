@@ -21,9 +21,9 @@ export default function App() {
     <NavigationContainer>
       <StatusBar style='light' />
       <Stack.Navigator screenOptions={globalScreenOptions}>
-        <Stack.Screen name='Home' component={HomeScreen} />
         <Stack.Screen name='Start' component={GettingStartedScreen} />  
-        <Stack.Screen name='Onboard' component={OnboardingScreen} />
+        {/* <Stack.Screen name='Onboard' component={OnboardingScreen} /> */}
+        <Stack.Screen name='Home' component={HomeScreen} />
         <Stack.Screen name='Event' component={EventDetailScreen} />
         <Stack.Screen name='AppInfo' component={AppInfoScreen} />
         <Stack.Screen name='Profile' component={ProfileScreen} />

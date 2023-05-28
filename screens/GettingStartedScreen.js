@@ -33,13 +33,13 @@ const GettingStartedScreen = ({ route, navigation }) => {
           style={styles.background}
         />
         <Image
-          source={require('../assets/logo_name.png')}
+          source={require('../assets/splash.png')}
           resizeMode="contain"
           style={styles.image}
         />
-        <Text style={styles.heading}>Stay Connected, Stay Protected</Text>
-        <Text style={styles.body}>The Future of Policing,is now at Your Fingertips</Text>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Onboard')}>
+        <Text style={styles.heading}>No Potholes,         Safe Roads</Text>
+        <Text style={styles.body}>The Future of Indian Road Transportation, is now in Digital format</Text>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
       </View>
@@ -63,14 +63,14 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   image: {
-    height: '45%',
+    height: '25%',
   },
   heading: {
     fontSize: 32,
     fontFamily: 'Raleway',
     color: "black",
     paddingHorizontal: '10%',
-    marginTop: '-5%',
+    marginTop: '5%',
     textAlign: 'center',
   },
   body: {

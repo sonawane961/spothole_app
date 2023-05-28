@@ -33,16 +33,15 @@ const AppInfoScreen = ({ route, navigation }) => {
           style={styles.background}
         />
         <Image
-          source={require('../assets/logo_name.png')}
+          source={require('../assets/splash.png')}
           resizeMode="contain"
           style={styles.image}
         />
         <Text style={styles.heading}>
-            Welcome to our app, designed to help track police officers who are deployed to 
-            bandobast duty. Our app is specifically created to address the problem statement PS13 of Kavach 2023
+            Welcome to our app, designed to help detect and track potholes that are all there on roads. Our app is specifically created to address the problem of road accidents due to road damages.
         </Text>
-        <Text style={styles.body}>Crafted with ❤️ By :</Text>
-        <Text style={styles.names}>Utsav Khatu{'\n'}Tushar Bauskar{'\n'}Saurabh Powar{'\n'}Shubham Nazare{'\n'}Asavari Ambavane{'\n'}Chaitravi Chalke</Text>
+        <Text style={styles.body}>Crafted By :</Text>
+        <Text style={styles.names}>Dattu Sonawane   201090909{'\n'}Suhal Shetty            191090076{'\n'}Ahmed Mirajkar     191090045{'\n'}Rohini Salunkhe    201091912{'\n'}Nikita Salunkhe      201091914</Text>
         <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
           <Text style={styles.buttonText}>Thank You 🙏️</Text>
         </TouchableOpacity>
@@ -67,15 +66,15 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   image: {
-    height: '30%',
-    marginTop: "-5%"
+    height: '20%',
+    // marginTop: "-5%"
   },
   heading: {
     fontSize: 18,
     fontFamily: 'Poppins',
     color: "black",
     paddingHorizontal: '10%',
-    marginTop: '-5%',
+    marginTop: '5%',
     textAlign: 'center',
   },
   body: {

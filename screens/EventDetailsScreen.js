@@ -4,67 +4,59 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function EventDetailsScreen({ route, navigation }) {
 
-    console.log(route.params.event)
+    // console.log(route.params.event)
 
-    const event_name = route.params.event.name;
-    const number_of_police = route.params.event.personnels.length;
-    const start_date = new Date(route.params.event.start);
-    const end_date = new Date(route.params.event.end);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedStartDate = start_date.toLocaleDateString('en-US', options);
-    const formattedEndDate = end_date.toLocaleDateString('en-US', options);
+    // const event_name = route?.params?.event.name;
+    // const number_of_police = route.params?.event?.personnels?.length;
+    // const start_date = new Date(route?.params?.event?.start);
+    // const end_date = new Date(route?.params?.event?.end);
+    // const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    // const formattedStartDate = start_date.toLocaleDateString('en-US', options);
+    // const formattedEndDate = end_date.toLocaleDateString('en-US', options);
 
     return (
         <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Image
-                    source={require('../assets/images/manase.jpg')}
+                    source={require('../assets/stats.png')}
                     style={styles.image}
                 />
-                <View style={styles.imageOverlay} />
-                <Ionicons name="md-arrow-back" size={28} color="#FFFFFF" style={styles.backButton} onPress={() => navigation.navigate('Home')}/>
-                <Text style={styles.title}>{event_name}🚩️🚩️</Text>
+                <View  />
+                <Ionicons name="md-arrow-back" size={32} color="red" style={styles.backButton} onPress={() => navigation.navigate('Home')}/>
+                
             </View>
+            
             <View style={styles.detailsContainer}>
+            <View style={{marginBottom: 10}}>
+                <Text style={styles.title}>PotHoles Data 📑️ 📑️</Text>
+            </View>
                 <View style={styles.detailsRow}>
-                    <Ionicons name="md-calendar" size={24} color="#10332E" />
+                  
                     <View style={styles.titleCon}>
-                        <Text style={styles.priText}> Date </Text>
+                        <Text style={styles.priText}> Date Range </Text>
                     </View>
-                    <Text style={styles.detailsText}> : {formattedStartDate} - {formattedEndDate}</Text>
+                    <Text style={styles.detailsText}> : 1 May - 5 May 2023</Text>
                 </View>
-                <View style={styles.detailsRow}>
-                    <Ionicons name="md-time" size={24} color="#10332E" />
+                <View style={styles.detailsRown}>
+                    <Text style={styles.detailsTextn}>250</Text>
                     <View style={styles.titleCon}>
-                        <Text style={styles.priText}> Time </Text>
+                        <Text style={styles.priText}> Spotted on Mumbai-Pune Expressway </Text>
                     </View>
-                    <Text style={styles.detailsText}> : 10:00 AM - 12:00 PM</Text>
+                    
                 </View>
-                <View style={styles.detailsRow}>
-                    <Ionicons name="md-people" size={24} color="#10332E" />
+                <View style={styles.detailsRown}>
+                <Text style={styles.detailsTextn2}>12</Text>
                     <View style={styles.titleCon}>
-                        <Text style={styles.priText}> On-Duty Officers </Text>
+                        <Text style={styles.priText}> Spotted in Karve Road, Pune </Text>
                     </View>
-                    <Text style={styles.detailsText}> 👮‍♂️ : {number_of_police} ️</Text>
+
                 </View>
-                <View style={styles.detailsRow}>
-                    <Ionicons name="md-star" size={24} color="#10332E" />
-                    <View style={styles.titleCon}>
-                        <Text style={styles.priText}> Priority </Text>
-                    </View>
-                    <Text style={styles.detailsText}> : </Text>
-                    <View style={styles.priCon}>
-                        <Text style={styles.priText}> High </Text>
-                    </View>
-                </View>
+               
                 <View style={styles.descriptionContainer}>
-                    <Text style={styles.descriptionTitle}>Description: </Text>
+                    <Text style={styles.descriptionTitle}>Hot Update: </Text>
                     <View style={styles.desCon}>
                         <Text style={styles.descriptionText}>
-                            MNS chief Raj Thackeray trained his guns at Maharashtra chief minister Eknath Shinde from the Shivaji Park after the latter held a public meeting at the same venue two weeks after Uddhav Thackeray had addressed a massive rally.
-                        </Text>
-                        <Text style={styles.descriptionText}>
-                            {`\n`}Maharashtra Navnirman Sena (MNS) chief Raj Thackeray on Wednesday attacked chief minister Eknath Shinde for holding a public meeting at the same venue where Uddhav Thackeray had held a massive rally two weeks back.
+                        Cracks, potholes on Mumbai-Pune Expressway days after inauguration by PM Modi; draws criticism on Twitter
                         </Text>
                     </View>
                 </View>
@@ -99,23 +91,25 @@ const styles = StyleSheet.create({
         zIndex: 1,
     },
     title: {
-        position: 'absolute',
-        marginRight: '5%',
-        bottom: 20,
+        position: 'relative',
+        margin: '2%',
+        // bottom: 20,
         left: 20,
         // fontFamily: 'Poppins-Bold',
-        fontSize: 24,
-        color: '#FFFFFF',
+        fontSize: 28,
+        fontWeight: 'bold',
+        alignSelf: 'center',
+        color: '#000000',
         zIndex: 1,
     },
     detailsContainer: {
         padding: 20,
     },
     titleCon: {
-        backgroundColor: '#4A2511',
-        paddingHorizontal: 7,
+        backgroundColor: '#80471C',
+        paddingHorizontal: 18,
         marginLeft: 5,
-        paddingVertical: 5,
+        paddingVertical: 12,
         borderRadius: 12,
     },
     desCon: {
@@ -126,14 +120,34 @@ const styles = StyleSheet.create({
     detailsRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: 15,
+    },
+    detailsRown: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: 15,
     },
     detailsText: {
         // fontFamily: 'Poppins-Regular',
-        fontSize: 16,
+        fontSize: 18,
         color: '#10332E',
-        fontWeight: '600',
+        fontWeight: 'bold',
+        // left: 100
         // marginLeft: 10,
+    },
+    detailsTextn: {
+        fontSize: 34,
+        alignSelf: 'center',
+        fontWeight: 'bold',
+        color: 'red',        
+        marginBottom: 10,
+    },
+    detailsTextn2: {
+        fontSize: 34,
+        alignSelf: 'center',
+        fontWeight: 'bold',
+        color: '#F6BE00',        
+        marginBottom: 10,
     },
     priCon: {
         backgroundColor: '#C70039',
@@ -143,6 +157,7 @@ const styles = StyleSheet.create({
     },
     priText: {
         color: '#FFFFFF',
+        fontSize: 16,
     },
     descriptionContainer: {
         marginTop: 20,

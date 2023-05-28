@@ -51,10 +51,10 @@ export default function HomeScreen({ route, navigation }) {
     latitude: 19.0244,
     longitude: 72.8191,
   });
-  const [otherLocation4, setOtherLocation4] = useState({
-    latitude: 19.0148,
-    longitude: 72.8531,
-  });
+  // const [otherLocation4, setOtherLocation4] = useState({
+  //   latitude: 19.0148,
+  //   longitude: 72.8531,
+  // });
   const [otherLocation5, setOtherLocation5] = useState({
     latitude: 19.0395,
     longitude: 72.8472,
@@ -308,37 +308,37 @@ export default function HomeScreen({ route, navigation }) {
           ></Marker>
           <Marker coordinate={currentLocation} title='Your location'>
             <Image
-              source={require('../assets/location_current.png')}
+              source={require('../assets/pin.png')}
               style={{ width: 70, height: 70 }}
             />
           </Marker>
-          <Marker coordinate={otherLocation1} title='Officers'>
+          <Marker coordinate={otherLocation1} title='PotHoles'>
             <Image
-              source={require('../assets/location_other.png')}
+              source={require('../assets/pin.png')}
               style={{ width: 60, height: 60 }}
             />
           </Marker>
-          <Marker coordinate={otherLocation2} title='Officers'>
+          <Marker coordinate={otherLocation2} title='PotHoles'>
             <Image
-              source={require('../assets/location_other.png')}
+              source={require('../assets/pin.png')}
               style={{ width: 60, height: 60 }}
             />
           </Marker>
-          <Marker coordinate={otherLocation3} title='Officers'>
+          <Marker coordinate={otherLocation3} title='PotHoles'>
             <Image
-              source={require('../assets/location_other.png')}
+              source={require('../assets/pin.png')}
               style={{ width: 60, height: 60 }}
             />
           </Marker>
-          <Marker coordinate={otherLocation4} title='Officers'>
+          {/* <Marker coordinate={otherLocation4} title='PotHoles'>
             <Image
-              source={require('../assets/location_other.png')}
+              source={require('../assets/pin.png')}
               style={{ width: 60, height: 60 }}
             />
-          </Marker>
-          <Marker coordinate={otherLocation5} title='Officers'>
+          </Marker> */}
+          <Marker coordinate={otherLocation5} title='PotHoles'>
             <Image
-              source={require('../assets/location_other.png')}
+              source={require('../assets/pin.png')}
               style={{ width: 60, height: 60 }}
             />
           </Marker>
@@ -359,7 +359,7 @@ export default function HomeScreen({ route, navigation }) {
             color='#181829'
             style={styles.searchIcon}
           />
-          <Text style={styles.searchInput}>{eventName}🚩️</Text>
+          <Text style={styles.searchInput}>SpotHole Detector 🛣️</Text>
           {/* <Ionicons name="chevron-down" size={24} color="black" style={styles.downIcon} /> */}
         </View>
         <TouchableOpacity
@@ -437,7 +437,7 @@ export default function HomeScreen({ route, navigation }) {
               )}
             </TouchableOpacity>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={[
                 styles.bottomNavigationItem,
                 activeItem === 'search' &&
@@ -457,7 +457,7 @@ export default function HomeScreen({ route, navigation }) {
               {activeItem === 'search' && (
                 <View style={styles.activeDot} />
               )}
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
 
@@ -467,7 +467,7 @@ export default function HomeScreen({ route, navigation }) {
           <View style={styles.goButton}>
             <Image
               style={styles.logo}
-              source={require('../assets/logo.png')}
+              source={require('../assets/splash.png')}
             />
           </View>
         </TouchableOpacity>
@@ -537,7 +537,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   bottomContainer: {
-    width: '100%',
+    width: '85%',
     height: 75,
     position: 'absolute',
     flexDirection: 'row',
@@ -592,8 +592,8 @@ const styles = StyleSheet.create({
     borderRadius: 45,
   },
   logo: {
-    height: 100,
-    width: 100,
+    height: 85,
+    width: 85,
   },
   modal: {
     position: 'absolute',

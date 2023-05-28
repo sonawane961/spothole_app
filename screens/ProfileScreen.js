@@ -7,14 +7,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function ProfileScreen({ route, navigation }) {
     console.log(route.params.profile)
 
-    const name = route.params.profile.firstName + ' ' + route.params.profile.lastName
-    const batch = route.params.profile.batch
-    const dob = new Date(route.params.profile.dob)
+    const name = route.params?.profile?.firstName + ' ' + route.params?.profile?.lastName
+    const batch = route.params?.profile?.batch
+    const dob = new Date(route.params?.profile?.dob)
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = dob.toLocaleDateString('en-US', options);
-    const id_number = route.params.profile.id_number
-    const station_name = route.params.profile.station.name
-    const station_address = route.params.profile.station.address
+    const id_number = route.params?.profile?.id_number
+    const station_name = route.params?.profile?.station.name
+    const station_address = route.params?.profile?.station.address
 
     return (
         <View style={styles.container}>
