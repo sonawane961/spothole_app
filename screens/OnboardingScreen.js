@@ -17,7 +17,7 @@ import {
 } from '@expo/vector-icons';
 import axios from 'axios';
 import * as Font from 'expo-font';
-import { host } from '../ip';
+// import { host } from '../ip';
 
 const customFonts = {
     Poppins: require('../assets/fonts/Poppins/Poppins-Regular.ttf'),

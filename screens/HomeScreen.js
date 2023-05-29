@@ -16,7 +16,7 @@ import MapView, { Marker, Circle } from 'react-native-maps';
 import * as Location from 'expo-location';
 import * as Notifications from 'expo-notifications';
 import axios from 'axios';
-import { host } from '../ip';
+// import { host } from '../ip';
 
 const pubnub = new Pubnub({
   publishKey: 'pub-c-fc2bfb00-7232-4340-82b1-1efc6a1f7d41',
